@@ -17,6 +17,7 @@ afterEach(cleanup);
 jest.mock("axios");
 
 describe("Login Page", () => {
+  // Inicio de sesión con datos correctos
   it("should allow me to log in", async () => {
     render(<LoginPage />);
 
@@ -46,24 +47,6 @@ describe("Login Page", () => {
     };
 
     axios.get.mockImplementationOnce(() => Promise.resolve(data));
-    await expect(Authservice.login(email, password)).resolves
-    // console.log(AuthService.login(email, password));
-    // await expect(Promise.resolve('lemon')).resolves.toBe('lemon')
-
-    //   await waitFor(() =>
-    //     expect(axiosMock).toHaveBeenCalledWith(
-    //       "http://localhost:8080/users/signin",
-    //       expect.objectContaining({
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //           email,
-    //           password,
-    //         }),
-    //       })
-    //     )
-    //   );
+    await expect(Authservice.login(email, password)).resolves;
   });
 });
