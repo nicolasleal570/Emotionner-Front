@@ -5,8 +5,8 @@ import axios from "axios";
 /**
  * API URL
  */
-const API_URL ="https://emotionner.herokuapp.com/";
-//const API_URL = "http://localhost:8080/";
+// const API_URL ="https://emotionner.herokuapp.com/";
+const API_URL = "http://localhost:8080/";
 /**
  * Registration method
  * @param {*} username 
@@ -36,13 +36,13 @@ const login = (email, password) => {
       email,
       password,
     })
-    .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
+    // .then((response) => {
+    //   if (response.data.accessToken) {
+    //     localStorage.setItem("user", JSON.stringify(response.data));
+    //   }
 
-      return response.data;
-    });
+    //   return response.data;
+    // });
 };
 /**
  * Logout method
