@@ -9,11 +9,19 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/";
 /**
  * Registration method
- * @param {*} username 
- * @param {*} email 
- * @param {*} password 
+ * @param {*} username
+ * @param {*} email
+ * @param {*} password
  */
-const register = (name,lastname,email,birthdate,ocupation,premium,password) => {
+const register = (
+  name,
+  lastname,
+  email,
+  birthdate,
+  ocupation,
+  premium,
+  password
+) => {
   return axios.post(API_URL + "users/signup", {
     name,
     lastname,
@@ -21,13 +29,13 @@ const register = (name,lastname,email,birthdate,ocupation,premium,password) => {
     birthdate,
     ocupation,
     premium,
-    password
+    password,
   });
 };
 /**
  * Login method
- * @param {*} username 
- * @param {*} password 
+ * @param {*} username
+ * @param {*} password
  * @returns userdata
  */
 const login = (email, password) => {
@@ -36,13 +44,13 @@ const login = (email, password) => {
       email,
       password,
     })
-    // .then((response) => {
-    //   if (response.data.accessToken) {
-    //     localStorage.setItem("user", JSON.stringify(response.data));
-    //   }
+    .then((response) => {
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
 
-    //   return response.data;
-    // });
+      return response.data;
+    });
 };
 /**
  * Logout method
@@ -57,18 +65,18 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
-const isAuth= (user)=>{
-    if(user){
-      return true
-    } else {
-      return false
-    }
-}
+const isAuth = (user) => {
+  if (user) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export default {
   register,
   login,
   logout,
   getCurrentUser,
-  isAuth
+  isAuth,
 };

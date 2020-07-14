@@ -1,52 +1,61 @@
 import React, { Component } from "react";
-import {
-  render,
-  cleanup,
-  waitForElement,
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import axios from "axios";
 import LoginPage from "../Forms/login-user-form";
-import Authservice from "../../Services/auth.service";
+import { shallow, mount } from "enzyme";
 
 afterEach(cleanup);
 
-jest.mock("axios");
-
 describe("Login Page", () => {
-  // Inicio de sesión con datos correctos
-  it("should allow me to log in", async () => {
-    render(<LoginPage />);
+  let wrapper;
+  let alertSpy;
 
-    const email = "nico@email.com";
+  beforeEach(() => {
+    alertSpy = jest.spyOn(window, "alert");
+    wrapper = shallow(<LoginPage />);
+  });
+
+  // Testing the email field change event
+  it("should set the email value on change event", () => {
+    const email = "nico@email.com"; // Texto de prueba
+    expect(wrapper.find("#form")).toHaveLength(1); // #form es el id que le puse al form para poder encontrarlo
+    wrapper
+      .find("#emailField") // #emailField es el id del campo email
+      .simulate("change", { target: { name: "email", value: email } });
+    expect(wrapper.find("#emailField").prop("value")).toEqual(email);
+  });
+
+  // Testing the password field change event
+  it("should set the email value on change event", () => {
     const password = "password";
-    const emailLabel = screen.getByLabelText("Correo Electrónico");
-    fireEvent.change(emailLabel, {
+    expect(wrapper.find("#form")).toHaveLength(1);
+    wrapper
+      .find("#passwordField") // #passwordField es el id del campo de password
+      .simulate("change", { target: { name: "password", value: password } });
+    expect(wrapper.find("#passwordField").prop("value")).toEqual(password);
+  });
+
+  // Testing if the password is send without spaces
+  it("should set the password value on change event with trim", () => {
+    expect(wrapper.find("#form")).toHaveLength(1);
+    wrapper.find("#passwordField").simulate("change", {
       target: {
-        value: email,
+        value: "some password with spaces",
       },
     });
+    expect(wrapper.find("#passwordField").prop("value")).toEqual(
+      "somepasswordwithspaces"
+    );
+  });
 
-    fireEvent.change(screen.getByLabelText("Contraseña"), {
-      target: {
-        value: password,
-      },
-    });
-
-    fireEvent.click(screen.getByText("Iniciar Sesión"));
-
-    const data = {
-      id: 371,
-      email: "nico@email.com",
-      roles: ["ROLE_USER"],
-      accessToken:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzcxLCJpYXQiOjE1OTQ2NjM2MDgsImV4cCI6MTU5NDc1MDAwOH0.w7MLsBgvuECQLyARls8RHGlAW-f33BowKpprl12CaGg",
-    };
-
-    axios.get.mockImplementationOnce(() => Promise.resolve(data));
-    await expect(Authservice.login(email, password)).resolves;
+  it("onSubmit() should throw error if data is missing", () => {
+    wrapper = mount(<LoginPage message="Some error" />);
+    wrapper
+      .find("#form")
+      .hostNodes()
+      .simulate("submit", {
+        preventDefault: () => {},
+      });
+    expect(wrapper.find("#alertDanger")).toHaveLength(1);
   });
 });

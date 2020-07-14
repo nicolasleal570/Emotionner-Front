@@ -20,10 +20,10 @@ const Login = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState(props.email || '');
+  const [password, setPassword] = useState(props.password || '');
+  const [loading, setLoading] = useState(props.loading || false);
+  const [message, setMessage] = useState(props.message || '');
 
   const onChangeEmail = (e) => {
     const email = e.target.value;
@@ -73,7 +73,7 @@ const Login = (props) => {
           <div className="cont">
             <div className="form sign-in">
               <h2 style={{ fontWeight: "inherit" }}>¡Bienvenido de Vuelta!</h2>
-              <Form onSubmit={handleLogin} ref={form}>
+              <Form onSubmit={handleLogin} ref={form} id="form">
                 <FormGroup>
                   <label>
                     <span>Correo Electrónico</span>
@@ -82,6 +82,7 @@ const Login = (props) => {
                       className="form-control input-1 input-2"
                       placeholder="Introduzca su correo"
                       name="email"
+                      id="emailField"
                       value={email}
                       onChange={onChangeEmail}
                       validations={[required]}
@@ -94,6 +95,7 @@ const Login = (props) => {
                     <span>Contraseña</span>
                     <Input
                       type="password"
+                      id="passwordField"
                       className="form-control input-1 input-2"
                       placeholder="Introduzca su contraseña"
                       name="password"
@@ -109,6 +111,7 @@ const Login = (props) => {
                     <button
                       className="btn btn-primary submit"
                       disabled={loading}
+                      id="submitButton"
                     >
                       {loading && (
                         <span className="spinner-border spinner-border-sm"></span>
@@ -120,7 +123,7 @@ const Login = (props) => {
 
                 {message && (
                   <div className="form-group">
-                    <div className="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert" id="alertDanger">
                       {message}
                     </div>
                   </div>
