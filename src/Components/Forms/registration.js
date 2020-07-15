@@ -11,10 +11,10 @@ import { FormGroup } from "reactstrap";
  * Requeried method verifies that all the fields are filled in
  * @param {*} value 
  */
-const required = (value) => {
+export const required = (value) => {
   if (!value) {
     return (
-      <div className="alert alert-danger" role="alert">
+      <div className="alert alert-danger" role="alert" id="alertt" title="alertt">
         Este campo es requerido!
       </div>
     );
@@ -24,10 +24,10 @@ const required = (value) => {
  * Email validation method, validates if an email is a valid format
  * @param {*} value 
  */
-const validEmail = (value) => {
+export const validEmail = (value) => {
   if (!isEmail(value)) {
     return (
-      <div className="alert alert-danger" role="alert">
+      <div className="alert alert-danger" role="alert" id="alertemail" title="alertemail">
         Este no es un email válido, porfavor ingrese una dirección valida.
       </div>
     );
@@ -38,10 +38,10 @@ const validEmail = (value) => {
  * must be between 6 and 40 characters
  * @param {*} value 
  */
-const vpassword = (value) => {
+export const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
-      <div className="alert alert-danger" role="alert">
+      <div className="alert alert-danger" role="alert" id="alertpass">
         La contraseña debe tener de 6 a 40 caracteres.
       </div>
     );
@@ -138,7 +138,7 @@ const Register = (props) => {
         </div>
         <div className="form-reg sign-up">
           <h2 className="h2">¡Regístrate ya!</h2>
-          <Form onSubmit={handleRegister} ref={form} autocomplete='off'>
+          <Form onSubmit={handleRegister} ref={form} autocomplete='off' id="form">
             {!successful && (
               <div >
                 <div className="label-1">
@@ -148,6 +148,7 @@ const Register = (props) => {
                     type="text"
                     className="form-control input-1 input-2"
                     name="name"
+                    id="namefield"
                     value={name}
                     onChange={onChangeName}
                     validations={[required]}
@@ -161,6 +162,7 @@ const Register = (props) => {
                     type="text"
                     className="form-control input-1 input-2"
                     name="lastname"
+                    id="lnamefield"
                     value={lastname}
                     onChange={onChangeLastName}
                     validations={[required]}
@@ -174,6 +176,7 @@ const Register = (props) => {
                     type="text"
                     className="form-control input-1 input-2"
                     name="email"
+                    id="emailField"
                     value={email}
                     onChange={onChangeEmail}
                     validations={[required, validEmail]}
@@ -188,6 +191,7 @@ const Register = (props) => {
                     className="form-control input-1 input-2"
                     name="password"
                     value={password}
+                    id="passwordfield"
                     onChange={onChangePassword}
                     validations={[required, vpassword]}
                   />
@@ -201,6 +205,7 @@ const Register = (props) => {
                     className="form-control input-1 input-2"
                     name="birthdate"
                     value={birthdate}
+                    id="bdayfield"
                     onChange={onChangeBirthdate}
                     validations={[required]}
                   />
@@ -218,6 +223,7 @@ const Register = (props) => {
                     successful ? "alert alert-success" : "alert alert-danger"
                   }
                   role="alert"
+                  id="alertDanger"
                 >
                   {message}
                 </div>

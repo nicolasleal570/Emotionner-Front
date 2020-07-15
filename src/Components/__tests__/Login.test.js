@@ -26,7 +26,7 @@ describe("Login Page", () => {
   });
 
   // Testing the password field change event
-  it("should set the email value on change event", () => {
+  it("should set the password value on change event", () => {
     const password = "password";
     expect(wrapper.find("#form")).toHaveLength(1);
     wrapper
