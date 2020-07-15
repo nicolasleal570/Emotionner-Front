@@ -4,6 +4,8 @@ import "@testing-library/jest-dom/extend-expect";
 import RegistrationPage from "../Forms/registration";
 import { validEmail } from "../Forms/registration";
 import { shallow, mount, render } from "enzyme";
+import { isEmail } from "validator";
+
 
 afterEach(cleanup);
 
@@ -42,19 +44,16 @@ describe("registration page", () => {
 
     it("should check the email value is correct", () => {
         const email = "asd"; // password incorrecta
-        wrapper = mount(<RegistrationPage/>)
         wrapper
-            .find("#emailField").hostNodes()
+            .find("#emailField")
              // #passwordfield es el id del campo passsword
             .simulate("change", { target: { name: "email", value: email } });
-            console.log(wrapper
-                .find("#namefield").hostNodes())
+
             wrapper
-            .find("#namefield").hostNodes()
+            .find("#namefield")
              // #passwordfield es el id del campo passsword
             .simulate("click");
-        wrapper.update()
-            expect(wrapper.get(1)).toEqual(validEmail(email));
+            expect(wrapper.find("#emailField").childAt(0)).toEqual(validEmail(email));
 
 
     });
@@ -126,7 +125,7 @@ describe("registration page", () => {
     });
 
     it("should not be able to register an already existing email", () => {
-        jest.spyOn(window, 'alert').mockImplementation(() => { });
+        jest.spyOn(window, 'alert').mockImplementation(() => { console.log(window.alert) });
 
         const email = "menor@email.com"; // email existente
         wrapper
@@ -150,13 +149,16 @@ describe("registration page", () => {
         wrapper
             .find("#bdayfield") // #bdayfield es el id del campo birthdate
             .simulate("change", { target: { name: "birthdate", value: bday } });
-        const formWrapper = wrapper.find("#form").dive();
-        formWrapper.simulate("submit");
-        expect(window.alert).not.toBeEqual("Failed! Email is already in use!");
+        const formWrapper = wrapper.find("#form");
+        formWrapper.simulate("submit(click)", {
+            preventDefault: () => {},
+          });
+          console.log(window.alert)
+          expect(window.alert).toBeCalledWith(expect.stringMatching("Failed! Email is already in use!" ));
     });
 
     it("should be able to register a new user", () => {
-        jest.spyOn(window, 'alert').mockImplementation(() => { });
+        const alerta = jest.spyOn(window, 'alert').mockImplementation(() => { });
 
 
         const random = makeid(5)
@@ -184,11 +186,13 @@ describe("registration page", () => {
         wrapper
             .find("#bdayfield") // #bdayfield es el id del campo birthdate
             .simulate("change", { target: { name: "birthdate", value: bday } });
-        const formWrapper = wrapper.find("#form").dive();
+        const formWrapper = wrapper.find("#form");
         
-        formWrapper.simulate("submit");
-        
-        expect(window.alert).not.toBeEqual("Failed! Email is already in use!");
+        formWrapper.simulate("submit(click)", {
+            preventDefault: () => {},
+          });
+          
+        expect(alerta).toBeCalledWith(expect.not.stringMatching("Failed! Email is already in use!" ));
     });
 
 
