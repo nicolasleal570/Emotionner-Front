@@ -9,7 +9,7 @@ import "./../../App.css";
 const required = (value) => {
   if (!value) {
     return (
-      <div className="alert alert-danger" role="alert">
+      <div className="alert alert-danger" role="alert" id="idValidation2">
         Este campo es requerido!
       </div>
     );
@@ -122,8 +122,8 @@ const Login = (props) => {
                 </FormGroup>
 
                 {message && (
-                  <div className="form-group">
-                    <div className="alert alert-danger" role="alert" id="alertDanger">
+                  <div className="form-group" id="alertDanger">
+                    <div className="alert alert-danger" role="alert">
                       {message}
                     </div>
                   </div>
